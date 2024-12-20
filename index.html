@@ -8,6 +8,11 @@
         .is-size-3rem {
             font-size: 3rem;
         }
+		
+		.body {
+			font-family: 'Inter', sans-serif; font-weight: '400';
+		}
+
     </style>
 	<title>Barbershop</title>
 </head>
@@ -18,7 +23,7 @@
             <figure class="image is-3by1">
                 <img class="is rounded" src="images/barbershop headerpic.jpg" />
             </figure>  
-            <h1 class="is-size-1 has-text-black" style="font-size: 3rem;">World Class KINGZ Parlour</h1>
+            <h1 class="title is-size-1 is-size-3-mobile has-text-black" style="font-size: 3rem;">World Class KINGZ Parlour</h1>
 
             <div class="Frame3" style="align-self: stretch; padding: 8px; justify-content: flex-start; align-items: center; gap: 8px; display: inline-flex">
                 <div class="LocationCompass" style="width: 44px; height: 44px; position: relative">
@@ -26,7 +31,7 @@
                         <img src="images/LocationCompass.png" alt="Icon" style="width: 44px; height: 44px;" />
                     </div>
                 </div>
-                <h2 class="is-size-3 has-text-black" style="font-size: 2rem;">3178 S. 27th st Milwaukee, WI 53215 </h2>
+                <h2 class="is-size-3 is-size-4-mobile has-text-black" style="font-size: 2rem;">3178 S. 27th st Milwaukee, WI 53215 </h2>
             </div>
         
 
@@ -216,15 +221,40 @@
 		<script>
 			let slideIndex = 0;
 		
-			function moveSlide(step) {
+			function moveSlide(step,) {
 				const items = document.querySelectorAll(".carousel-item");
 				const totalItems = items.length;
 				slideIndex = (slideIndex + step + totalItems) % totalItems;
-		
+
+				// Calculate the new index
+				const newIndex = slideIndex + step;
+
+				// Prevent moving beyond the first or last slide
+				if (newIndex < 0 || newIndex  >= totalItems) return;
+
+				slideIndex = newIndex;
+
 				// Move the carousel
 				const offset = -slideIndex * 438;  // Adjust this based on item width + padding
 				document.querySelector(".carousel-container").style.transform = `translateX(${offset}px)`;
+
+				// Update control button states
+				updateControls();
 			}
+
+			function updateControls() {
+				const items = document.querySelectorAll(".carousel-item");
+				const totalItems = items.length;
+
+				// Disable the left button if at the first slide
+				document.querySelector(".carousel-prev").disabled = slideIndex === 0;
+
+				// Disable the right button if at the last slide
+				document.querySelector(".carousel-next").disabled = slideIndex === totalItems - 1;
+			}
+
+			// Initialize the controls on page load
+			document.addEventListener("DOMContentLoaded", updateControls);
 		</script>
 		
 		<style>
@@ -268,6 +298,12 @@
 			.carousel-next {
 				right: 65px;
 			}
+
+			@media screen and (max-width: 768px){ /* Mobile devices */
+   	 			.carousel-next {
+        		right: 5px;
+    			}
+			}
 		</style>
 		
 		
@@ -278,6 +314,6 @@
 	<script>
 	bulmaCarousel.attach('#carousel-demo', {
 		slidesToScroll: 1,
-		slidesToShow: 4
+		slidesToShow: 1
 	});
 	</script>  </html>
